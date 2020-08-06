@@ -96,6 +96,9 @@ int			get_next_line(const int fd, char **line)
 	static char	*buf_stack;
 	char		*buf_heap;
 
+	if ((read(fd, buf_stack, 0) < 0))
+		return (-1);
+
 	if (!(buf_heap = (char *)malloc(BUFF_SIZE + 1)))
 		return (-1);
 	if (buf_stack)
