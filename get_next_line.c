@@ -6,7 +6,7 @@
 /*   By: xtang <xtang@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/30 18:34:21 by xtang             #+#    #+#             */
-/*   Updated: 2020/08/05 14:27:22 by xtang            ###   ########.fr       */
+/*   Updated: 2020/08/06 17:10:50 by xtang            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	check_line(char **bufstack, char **line)
 	return (0);
 }
 
-static int	read_to_end(int rd_result, char **line, char **bufstack)
+static int	read_to_end(int rd_result, char **bufstack, char **line)
 {
 	int result;
 
@@ -47,15 +47,14 @@ static int	read_to_end(int rd_result, char **line, char **bufstack)
 		result = -1;
 	else if (rd_result == 0)
 	{
-		*line = *bufstack;
-		result = 0;
-	}
-	else if (rd_result > 0 && rd_result < BUFF_SIZE)
-	{
-		if (*bufstack == NULL)
-			result = 0;
-		else
+		if (*bufstack != NULL)
+		{
+			*line = ft_strdup(*bufstack);
+			ft_strdel(bufstack);
 			result = 1;
+		}
+		else
+			result = 0;
 	}
 	else
 		result = 1;
@@ -67,6 +66,7 @@ static int	read_buff(int fd, char *bufheap, char **bufstack, char **line)
 	int		rd_result;
 	char	*temp_stack;
 	int		status;
+	int		aln;
 
 	while ((rd_result = read(fd, bufheap, BUFF_SIZE)) > 0)
 	{
@@ -82,12 +82,11 @@ static int	read_buff(int fd, char *bufheap, char **bufstack, char **line)
 		{
 			*bufstack = ft_strdup(bufheap);
 		}
-		if (check_line(bufstack, line))
-		{
-			break ;
-		}
+		aln = check_line(bufstack, line);
+		if (aln == 1)
+			return (1);
 	}
-	status = read_to_end(rd_result, line, bufstack);
+	status = read_to_end(rd_result, bufstack, line);
 	return (status);
 }
 
