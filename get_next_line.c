@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include "libft.h"
 
 static int	check_line(char **bufstack, char **line)
 {
