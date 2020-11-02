@@ -1,4 +1,4 @@
-# Hive-Libft
+# Hive-GET_Next_Line
 
 This repository is transferred from Hive Helsinki Vogsphere. 
 
